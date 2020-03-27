@@ -1,22 +1,21 @@
 # UFC-Prediction
 
-Web scraper with Python Requests and BeautifulSoup for http://www.ufcstats.com/statistics/events/completed.   
+Web scraper with Python Requests and BeautifulSoup for http://www.ufcstats.com/statistics/events/completed.
 
-TO DO:
-1. Rescrape and recalculate fighter statistics - the format of the statistics has changed since the last scrape
-2. Reformulate and update models
-3. Apply Deep Learning techniques and validate performance
-
-
-
-
-
+Inspiration from Rajeev Warrier @: https://www.kaggle.com/rajeevw/ufcdata 
+ 
+Project includes:
+1. Re-scrape UFC statistics: Event_Details_Scrape.ipynb, Event_Scrape.ipynb, Fighter Info Scrape.ipynb
+2. Data cleaning & wrangling, feature engineering to generate relevant cumulative statistics: Data Clean.ipynb
+3. EDA & Modeling: UFC Exploratory Analysis.ipynb, Model.ipynb
+4. Fight Tracker for incoming predictions: TBD
 
 
 
-For previous project:
-data.csv, 
-raw_fighter_details.csv,
-preprocessed.csv,
-courtesy of Rajeev Warrier @ https://www.kaggle.com/rajeevw/ufcdata
+
+
+
+
+
+
 

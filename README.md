@@ -56,8 +56,19 @@ Categorical variables like stance and weight class are one-hot-encoded. Before m
  
  3. **Logistic L1/L2 Regression:**
  Since regularized models penalize feature size, feature scaling can influence the performance of the model. Therefore, before I ran the model, I transformed the features using scikit-learn's Standard Scalar. To ensure minimal information leak, I fit the transformer on the training set and applied this transformation on the test data. The performance on this model, however, could not compare to the ensemble models. 
+ 
+ ![performance](Images/Performance.JPG)
 
+ 4. **Blended Model:**
+ Next, I combined predictions from all three models into a blended logistic model. I hoped this might allow classification errors by one model to be covered by the other. Unfortunately, I do not think there are enough observations/data to adequately train such a model. This model underperformed the individual models.
+ 
+## Deep Learning:
+Finally, I employed a basic, single-layer MLP to capture additionally nonlinearities and hidden significance in the features. I tried 2 versions of the model, one with all features, and one with only the continuous variables. Performance across models was comparable. 
 
+![performanceANN](Images/ANNPerformance.JPG)
+
+## Conclusion:
+I will compare the predictions from XGBoost and the SL-MLP models going forward. Let's see how well the models predict the upcoming fights, April 15th!
 
 
 

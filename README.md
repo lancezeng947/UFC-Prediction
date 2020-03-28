@@ -24,9 +24,44 @@ Inspiration from Rajeev Warrier @: https://www.kaggle.com/rajeevw/ufcdata
 2. 'cum' statistics are cumulative, not including the current match (except when it is the first match, otherwise, it is a wasted observation of 0's)
 3. Missing heights/weights/reaches imputed using linear regression of physical traits < ~5% data
 
-## Models:
-Logistic Regression, Random Forest Classifer, XGBoost
-Deep Learning: basic Sequential MLP
+## Data Cleaning:
+The data for this prediction model comes from http://www.ufcstats.com/statistics/events/completed, for fights from 1993 to the most recent fight (at this point March 14, 2020). I will be exploring prediction models for predicting a winner based on three broad categories: 
+ 1. A fighter's physical attributes & fighting style
+ 2. General information about the match: weight category, round duration
+ 3. Each fighter's cumulative statistics
+ 
+## Exploratory Analysis & Feature Engineering:
+I conducted exploratory data analysis with a couple of goals in mind:
+ 1. Validating assumptions about the relationships among features and labels
+ 2. Discovering new relationships among less interpretable features
+
+Initial plots of weight, height, and reach confirm a relatively linear relationship. For the very few instances for which weight/height data was missing,  I imputed them using the population median (to avoid the effect of the few outliers). I imputed the missing reach values as a simple regression of height and weight. Since relative heights/weights/reaches will be similar across fights determined by a weight class, for the model, I replace these features with a single variable measuring physical differene between the fighters. 
+
+Next, I tested one of initial hypothesis: younger fighters tend to defeat older fights:
+
+![image](Images/Age.JPG). 
+
+Each point defines all fights for a given age combination, with the intensity of the hue defining the  proportion of wins for that particular fighter. 
+
+## Feature Engineering & Modeling:
+As mentioned in the data dictionary, each observation consists of a fighter's cumulative statistics, excluding the current fight. These cumulative statistics transformed into measures of efficiency: cumulative statistics are divided by the average length of a match (10 minutes across the population); for hits and strikes, I use the fighters' cumulative efficiency (hits / attempts). 
+
+Categorical variables like stance and weight class are one-hot-encoded. Before modeling the data, some models (ie. L1 penalty, neural networks) perform better with scaled data. We will look at models that do not require scaling first:
+
+ 1. **Random Forest:**
+ I ran a gridsearch RandomForest Classifer across a variety of max feature counts. Intuitively, there is a similarity or connection among a fighter's statistics; by using less than the max number of the features, I want assess if there might be some redundancy or irrelevancy among the features. The gridsearch, however returned an optimal classifier using 100 features. Age and strikes hit (and strikes to head) were the most significant features. 
+ 
+ 2. **XGBoost:**
+ Another tree based model that does not require feature scaling. This model ran the fastest, and was utlimately the best performing machine learning model. The gridsearch CV model determined returned an optimal step size (eta) of .05, reinforcing the complexity fo the model. 
+ 
+ 3. **Logistic L1/L2 Regression:**
+ Since regularized models penalize feature size, feature scaling can influence the performance of the model. Therefore, before I ran the model, I transformed the features using scikit-learn's Standard Scalar. To ensure minimal information leak, I fit the transformer on the training set and applied this transformation on the test data. The performance on this model, however, could not compare to the ensemble models. 
+
+
+
+
+
+
 
 
 

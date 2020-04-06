@@ -15,7 +15,7 @@ Inspiration from Rajeev Warrier @: https://www.kaggle.com/rajeevw/ufcdata
 1. event_level_data.csv: summary statistics from general event page (ie. http://www.ufcstats.com/event-details/53278852bcd91e11)
 2. fight_details_batch{i}.csv {i, 1..6}: detailed match statistics (in batches to lessen load on web server)
 3. fighter.csv: physical attributes of individual fighters
-4. fights.csv: personal checkpoint (combining a., b., c.)
+4. fights.csv: personal checkpoint (combining files 1., 2., 3.)
 5. unformatted_final --> model_data.csv (ready-to-model data)
 6. to_model.csv: includes additional (optional) feature engineering
 
@@ -37,6 +37,8 @@ The data for this prediction model comes from http://www.ufcstats.com/statistics
  1. A fighter's physical attributes & fighting style
  2. General information about the match: weight category, round duration
  3. Each fighter's cumulative statistics
+ 
+ Extracted fight statistics are on a per-fight basis. When thinking about using past statistics to predict future outcomes however, it is important to use aggregate past statistics (ie. not the statistics for the actual match). The file **Data Clean** attempts to aggregate and format data from the 3 scraped files to produce data that can be used in predictions.  
  
 ## Exploratory Analysis & Feature Engineering:
 I conducted exploratory data analysis with a couple of goals in mind:

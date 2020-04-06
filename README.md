@@ -24,6 +24,14 @@ Inspiration from Rajeev Warrier @: https://www.kaggle.com/rajeevw/ufcdata
 2. 'cum' statistics are cumulative, not including the current match (except when it is the first match, otherwise, it is a wasted observation of 0's)
 3. Missing heights/weights/reaches imputed using linear regression of physical traits < ~5% data
 
+## To Use Scraper:
+1. Event_Scrape: extracts summary stats of events (ie. http://www.ufcstats.com/event-details/53278852bcd91e11)
+2. Event_Details_Scrape:  extracts detailed, fight-level statistics (ie. http://www.ufcstats.com/fight-details/e0b323dae5bf4c90)
+3. Fighter_Info_Scrape: extracts physical attributes of fighters (ie. http://www.ufcstats.com/fighter-details/ee9ebceabfd16fa7)
+
+For details, follow along with comments in code.
+
+
 ## Data Cleaning:
 The data for this prediction model comes from http://www.ufcstats.com/statistics/events/completed, for fights from 1993 to the most recent fight (at this point March 14, 2020). I will be exploring prediction models for predicting a winner based on three broad categories: 
  1. A fighter's physical attributes & fighting style

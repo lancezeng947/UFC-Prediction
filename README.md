@@ -5,10 +5,11 @@ Web scraper with Python Requests and BeautifulSoup for http://www.ufcstats.com/s
 Inspiration from Rajeev Warrier @: https://www.kaggle.com/rajeevw/ufcdata 
  
 ## Project includes:
-1. Re-scrape UFC statistics: **Event_Details_Scrape.ipynb, Event_Scrape.ipynb, Fighter Info Scrape.ipynb**
+1. Initial Data Collection of UFC Statistics: **Event_Details_Scrape.ipynb, Event_Scrape.ipynb, Fighter Info Scrape.ipynb**
 2. Data cleaning & wrangling, feature engineering to generate relevant cumulative statistics: **Data Clean.ipynb**
 3. EDA & Modeling: **UFC Exploratory Analysis.ipynb, Model.ipynb**
-4. Fight Tracker for incoming predictions: **TBD**
+4. Data Pipeline: Predicting New Fights: **Prediction Pipeline.ipynb, Update Model Pipeline.ipynb**
+5. Fight Tracker and Web Application: **TBD**
 
 
 ## File Dictionary:
@@ -16,12 +17,12 @@ Inspiration from Rajeev Warrier @: https://www.kaggle.com/rajeevw/ufcdata
 2. fight_details_batch{i}.csv {i, 1..6}: detailed match statistics (in batches to lessen load on web server)
 3. fighter.csv: physical attributes of individual fighters
 4. fights.csv: personal checkpoint (combining files 1., 2., 3.)
-5. unformatted_final --> model_data.csv (ready-to-model data)
+5. to_vis.cs --> model_data.csv (ready-to-model data)
 6. to_model.csv: includes additional (optional) feature engineering
 
 ## Data Notes:
 1. 'avg' statistics are on total/10 minutes of cumulative match time
-2. 'cum' statistics are cumulative, not including the current match (except when it is the first match, otherwise, it is a wasted observation of 0's)
+2. 'cum' statistics are cumulative, not including the current match (If it is a fighter's first match, I use that match's statistics as his 'average' statistics)
 3. Missing heights/weights/reaches imputed using linear regression of physical traits < ~5% data
 
 ## To Use Scraper:
@@ -38,7 +39,17 @@ The data for this prediction model comes from http://www.ufcstats.com/statistics
  2. General information about the match: weight category, round duration
  3. Each fighter's cumulative statistics
  
- Extracted fight statistics are on a per-fight basis. When thinking about using past statistics to predict future outcomes however, it is important to use aggregate past statistics (ie. not the statistics for the actual match). The file **Data Clean** attempts to aggregate and format data from the 3 scraped files to produce data that can be used in predictions.  
+Extracted fight statistics are on a per-fight basis. To leverage past statistics to predict future outcomes however, it is important to think in terms of past aggregate statistics, not the statistics for the actual match; in predictive analytics, that information will not be available. The file **Data Clean** attempts to aggregate and format data from the 3 scraped files to produce data that can be used in predictions. 
+
+For this project, data wrangling was an extensive assignment. I needed to combine data from numerous sources: a fighter's demographic information, event details, and aggregate statistics based on a fighter's historical fights. I performed the following steps to structure the data into a model-ready format:
+
+ 1. Retrieve a fighter's personal fight record 
+ 2. Using the personal data record, calculate a fighter's cumulative statistics at each particular fight 
+ 3. Recombine all fighters into their respective matches
+ 4. Engineer fight efficiency statistics as an intuitive measure of fighter success
+
+Fight record for Fighter Davi Ramos: ![image](Images/Personal.JPG)
+ 
  
 ## Exploratory Analysis & Feature Engineering:
 I conducted exploratory data analysis with a couple of goals in mind:
@@ -73,12 +84,19 @@ Categorical variables like stance and weight class are one-hot-encoded. Before m
  Next, I combined predictions from all three models into a blended logistic model. I hoped this might allow classification errors by one model to be covered by the other. Unfortunately, I do not think there are enough observations/data to adequately train such a model. This model underperformed the individual models.
  
 ## Deep Learning:
-Finally, I employed a basic, single-layer MLP to capture additionally nonlinearities and hidden significance in the features. I tried 2 versions of the model, one with all features, and one with only the continuous variables. Performance across models was comparable. 
+Finally, I employed a basic, single-layer MLP to capture additionally nonlinearities and hidden significance in the features. I tried 2 versions of the model, one with all features, and one with only the continuous variables. A model with the categorical variables might have improved the model due to the high cardinality of the categorical variables (sparse data). Nonetheless, performance across models was comparable. 
 
 ![performanceANN](Images/ANNPerformance.JPG)
 
+With more data, it might be interesting to analyze the random effects a particular weight class might exhibit (ie. how do particular fight statistics change in importance among different weight classes?) See below for a distribution of fights by weight classes:
+
+![image](Images/WtClass.PNG)
+
+## Data Pipeline for Continuous Improvement:
+The pipeline files in the main folder streamline the process of updating the model with recent fights, and of making predictions on upcoming fights. I am currently researching Python modules and packaging, to refactor the code and make it more accessible.  
+
 ## Conclusion:
-I will compare the predictions from XGBoost and the SL-MLP models going forward. Let's see how well the models predict the upcoming fights, April 15th!
+I will compare the predictions from XGBoost and the SL-MLP models going forward. Let's see how well the models predict the upcoming fights, May 16th!
 
 
 

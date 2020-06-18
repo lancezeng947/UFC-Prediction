@@ -90,7 +90,7 @@ Finally, I employed a basic, single-layer MLP to capture additionally nonlineari
 
 With more data, it might be interesting to analyze the random effects a particular weight class might exhibit (ie. how do particular fight statistics change in importance among different weight classes?) See below for a distribution of fights by weight classes:
 
-![image](Images/WtClass.PNG)
+![image](Images/WtClass.png)
 
 ## Data Pipeline for Continuous Improvement:
 The pipeline files in the main folder streamline the process of updating the model with recent fights, and of making predictions on upcoming fights. I am currently researching Python modules and packaging, to refactor the code and make it more accessible.  
